@@ -422,8 +422,8 @@
             Package: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>,
             Globe: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>,
             ArrowRight: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>,
-            ArrowLeft: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>,
-            User: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4-4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            User: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4-4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+            Home: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         };
 
         // --- CONTEXT ---
@@ -596,7 +596,7 @@
 
         // --- SHARED COMPONENTS ---
         const Button = ({ children, variant = 'primary', className = '', ...props }) => {
-            const baseStyle = "inline-flex items-center justify-center px-8 py-3.5 text-sm font-semibold tracking-wide transition-all duration-300 rounded-full";
+            const baseStyle = "inline-flex items-center justify-center px-8 py-3.5 text-sm font-semibold tracking-wide transition-all duration-300 rounded-full active:scale-[0.97]";
             const variants = {
                 primary: "bg-brand-charcoal text-brand-ivory hover:bg-brand-terracotta hover:text-white shadow-lg hover:shadow-brand-terracotta/20",
                 secondary: "bg-transparent border border-brand-charcoal text-brand-charcoal hover:bg-brand-charcoal hover:text-brand-ivory",
@@ -683,7 +683,7 @@
                                 <button className={`hidden md:flex items-center gap-1.5 p-1 text-sm font-medium transition-colors ${isSynced ? 'text-brand-terracotta' : 'hover:text-brand-terracotta'}`} title={isSynced ? t.accountSynced : ''}>
                                     <Icons.User />
                                 </button>
-                                <button className="relative p-1 hover:text-brand-terracotta transition-colors" onClick={() => setIsCartOpen(true)}>
+                                <button className="relative p-1 hover:text-brand-terracotta transition-colors hidden md:block" onClick={() => setIsCartOpen(true)}>
                                     <Icons.Bag />
                                     {cartCount > 0 && (
                                         <span className="absolute -top-1.5 -right-1.5 bg-brand-terracotta text-white text-[10px] font-bold w-[18px] h-[18px] rounded-full flex items-center justify-center border-2 border-brand-ivory dark:border-[#0C0A09] box-content">
@@ -735,6 +735,38 @@
                         </div>
                     )}
                 </>
+            );
+        };
+
+        const BottomNav = () => {
+            const { navigate, currentRoute, isCartOpen, setIsCartOpen, cartCount, t, lang } = useAppContext();
+            
+            return (
+                <div className={`md:hidden fixed bottom-0 left-0 right-0 bg-brand-ivory/95 dark:bg-[#0C0A09]/95 backdrop-blur-xl border-t border-brand-border z-40 flex justify-around items-center h-[72px] pb-[env(safe-area-inset-bottom)] px-2 shadow-[0_-5px_20px_rgba(0,0,0,0.05)] ${lang === 'ar' ? 'font-arabic' : 'font-sans'}`}>
+                    <button onClick={() => { setIsCartOpen(false); navigate('home'); }} className={`flex flex-col items-center justify-center w-full h-full space-y-1.5 transition-colors ${currentRoute.page === 'home' && !isCartOpen ? 'text-brand-terracotta' : 'text-brand-gray hover:text-brand-charcoal'}`}>
+                        <Icons.Home />
+                        <span className="text-[10px] font-medium">{t.home}</span>
+                    </button>
+                    <button onClick={() => { setIsCartOpen(false); navigate('shop'); }} className={`flex flex-col items-center justify-center w-full h-full space-y-1.5 transition-colors ${currentRoute.page === 'shop' && !isCartOpen ? 'text-brand-terracotta' : 'text-brand-gray hover:text-brand-charcoal'}`}>
+                        <Icons.Search />
+                        <span className="text-[10px] font-medium">{t.shop}</span>
+                    </button>
+                    <button onClick={() => setIsCartOpen(true)} className={`relative flex flex-col items-center justify-center w-full h-full space-y-1.5 transition-colors ${isCartOpen ? 'text-brand-terracotta' : 'text-brand-gray hover:text-brand-charcoal'}`}>
+                        <div className="relative">
+                            <Icons.Bag />
+                            {cartCount > 0 && (
+                                <span className="absolute -top-1.5 -right-1.5 bg-brand-terracotta text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-brand-ivory dark:border-[#0C0A09] box-content">
+                                    {cartCount}
+                                </span>
+                            )}
+                        </div>
+                        <span className="text-[10px] font-medium">{t.cart}</span>
+                    </button>
+                    <button onClick={() => { setIsCartOpen(false); navigate('track'); }} className={`flex flex-col items-center justify-center w-full h-full space-y-1.5 transition-colors ${currentRoute.page === 'track' && !isCartOpen ? 'text-brand-terracotta' : 'text-brand-gray hover:text-brand-charcoal'}`}>
+                        <Icons.User />
+                        <span className="text-[10px] font-medium">{t.track}</span>
+                    </button>
+                </div>
             );
         };
 
@@ -827,23 +859,25 @@
         const CartDrawer = () => {
             const { isCartOpen, setIsCartOpen, cart, updateCartQuantity, removeFromCart, cartTotal, navigate, t, formatPrice, lang } = useAppContext();
             if (!isCartOpen) return null;
-            const animationClass = lang === 'ar' ? 'animate-slide-in-left' : 'animate-slide-in-right';
+            const animationClass = lang === 'ar' ? 'md:animate-slide-in-left' : 'md:animate-slide-in-right';
 
             return (
-                <div className="fixed inset-0 z-50 flex" style={{ justifyContent: lang === 'ar' ? 'flex-start' : 'flex-end' }}>
-                    <div className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onClick={() => setIsCartOpen(false)}></div>
-                    <div className={`relative w-full max-w-md bg-brand-ivory h-full shadow-2xl flex flex-col ${animationClass}`}>
-                        <div className="flex items-center justify-between p-6 border-b border-brand-border">
+                <div className="fixed inset-0 z-[60] flex flex-col md:flex-row" style={{ justifyContent: lang === 'ar' ? 'flex-start' : 'flex-end' }}>
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onClick={() => setIsCartOpen(false)}></div>
+                    <div className={`relative w-full h-[85vh] md:h-full mt-auto md:mt-0 md:max-w-md bg-brand-ivory shadow-2xl flex flex-col rounded-t-[2rem] md:rounded-none animate-slide-up ${animationClass}`}>
+                        {/* Mobile Pull Handle */}
+                        <div className="w-full flex justify-center pt-3 pb-1 md:hidden">
+                            <div className="w-12 h-1.5 bg-brand-border rounded-full"></div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between p-6 pt-2 md:pt-6 border-b border-brand-border">
                             <h2 className="font-serif text-2xl">{t.cart}</h2>
-                            <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-brand-cream rounded-full transition-colors"><Icons.X /></button>
+                            <button onClick={() => setIsCartOpen(false)} className="p-2 bg-brand-cream/50 hover:bg-brand-cream rounded-full transition-colors"><Icons.X /></button>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto p-6">
+                        <div className="flex-1 overflow-y-auto p-6 pb-24 md:pb-6">
                             {cart.length === 0 ? (
                                 <div className="h-full flex flex-col items-center justify-center text-center space-y-6">
-                                    <div className="w-16 h-16 bg-brand-cream rounded-full flex items-center justify-center text-brand-gray">
-                                        <Icons.Bag />
-                                    </div>
                                     <p className="font-serif text-xl text-brand-gray">{t.emptyCart}</p>
                                     <Button onClick={() => { setIsCartOpen(false); navigate('shop'); }}>{t.exploreCollection}</Button>
                                 </div>
@@ -877,8 +911,8 @@
                             )}
                         </div>
 
-                        {cart.length > 0 && (
-                            <div className="p-6 bg-brand-cream/30 border-t border-brand-border shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+                            {cart.length > 0 && (
+                            <div className="p-6 bg-brand-cream/30 border-t border-brand-border shadow-[0_-10px_40px_rgba(0,0,0,0.05)] mb-[72px] md:mb-0">
                                 <div className="flex justify-between mb-2 font-medium text-lg">
                                     <span>{t.subtotal}</span>
                                     <span>{formatPrice(cartTotal)}</span>
@@ -910,15 +944,15 @@
                             className="w-full h-full object-cover img-hover-zoom"
                         />
                         <button 
-                            className={`absolute top-3 right-3 p-2.5 rounded-full shadow-md backdrop-blur-md transition-all duration-300 z-10 ${isWishlisted ? 'bg-white text-brand-terracotta' : 'bg-white/90 text-black hover:bg-white hover:text-brand-terracotta'}`}
+                            className={`absolute top-3 right-3 p-2.5 rounded-full shadow-md backdrop-blur-md transition-all duration-300 z-10 active:scale-90 ${isWishlisted ? 'bg-white text-brand-terracotta' : 'bg-white/90 text-black hover:bg-white hover:text-brand-terracotta'}`}
                             onClick={(e) => { e.stopPropagation(); toggleWishlist(product); }}
                         >
                             <Icons.Heart filled={isWishlisted} />
                         </button>
-                        <div className="absolute bottom-3 left-3 right-3 translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400 z-10">
+                        <div className="absolute bottom-3 left-3 right-3 translate-y-0 opacity-100 md:translate-y-10 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-400 z-10">
                             <Button 
                                 variant="glass" 
-                                className="w-full"
+                                className="w-full shadow-xl"
                                 onClick={(e) => { e.stopPropagation(); addToCart(product); }}
                             >
                                 {t.quickAdd}
@@ -1520,10 +1554,11 @@
                 <div className="min-h-screen flex flex-col selection:bg-brand-terracotta selection:text-white">
                     <AnnouncementBar />
                     <Header />
-                    <main className="flex-1">
+                    <main className="flex-1 pb-[72px] md:pb-0">
                         {renderPage()}
                     </main>
                     <Footer />
+                    <BottomNav />
                     <CartDrawer />
                     <Toast />
                 </div>
