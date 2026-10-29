@@ -25,8 +25,8 @@
                             cream: 'var(--bg-cream)',
                             charcoal: 'var(--text-charcoal)',
                             gray: 'var(--text-gray)',
-                            terracotta: '#B8755A',
-                            sage: '#A4AA91',
+                            terracotta: '#C17745',
+                            sage: '#988771',
                             border: 'var(--border-color)',
                             invert: 'var(--invert-bg)',
                             invertText: 'var(--invert-text)',
@@ -71,24 +71,24 @@
     <style>
         :root {
             --bg-ivory: #FDFBF7;
-            --bg-cream: #F4F1EB;
-            --text-charcoal: #1C1917;
-            --text-gray: #78716C;
-            --border-color: #E7E5E4;
-            --invert-bg: #1C1917;
+            --bg-cream: #F4EFE6;
+            --text-charcoal: #2E1F18;
+            --text-gray: #8C7A6B;
+            --border-color: #E8DFD5;
+            --invert-bg: #1A120E;
             --invert-text: #FDFBF7;
             --card-bg: #FFFFFF;
         }
 
         .dark {
-            --bg-ivory: #0C0A09;
-            --bg-cream: #1C1917;
-            --text-charcoal: #FAFAF9;
-            --text-gray: #A8A29E;
-            --border-color: #292524;
-            --invert-bg: #FAFAF9;
-            --invert-text: #0C0A09;
-            --card-bg: #131110;
+            --bg-ivory: #1A120E;
+            --bg-cream: #110B09;
+            --text-charcoal: #FDFBF7;
+            --text-gray: #8C7A6B;
+            --border-color: #3A2A22;
+            --invert-bg: #FDFBF7;
+            --invert-text: #1A120E;
+            --card-bg: #110B09;
         }
 
         body {
@@ -113,6 +113,29 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Firebase Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        try {
+            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+            if (firebaseConfig) {
+                const app = initializeApp(firebaseConfig);
+                const db = getFirestore(app);
+                const auth = getAuth(app);
+                window.firebaseEnv = { 
+                    app, db, auth, 
+                    helpers: { signInAnonymously, signInWithCustomToken, onAuthStateChanged, doc, setDoc, onSnapshot },
+                    appId: typeof __app_id !== 'undefined' ? __app_id : 'default-app-id'
+                };
+            }
+        } catch (e) {
+            console.error("Firebase init failed", e);
+        }
+    </script>
 </head>
 <body>
     <div id="root"></div>
@@ -134,15 +157,15 @@
                 shippingNote: "Shipping and taxes calculated at checkout.",
                 proceedToCheckout: "Proceed to Checkout",
                 quickAdd: "Quick Add",
-                heroSubtitle: "Made by hand, made for home",
+                heroSubtitle: "Hand-poured in Cairo",
                 heroTitle: "Make room for a little more calm.",
-                heroDesc: "Discover thoughtfully handcrafted candles designed to bring warmth, beautiful fragrance, and meaningful moments into your everyday life.",
+                heroDesc: "Inspired by Egyptian heritage and luxury craftsmanship. Discover thoughtfully handcrafted candles designed to bring warmth, beautiful fragrance, and meaningful moments into your everyday life.",
                 shopCollection: "Shop the Collection",
                 littleThings: "Little Things We Love",
                 littleThingsDesc: "Meet the candles our community keeps coming back to.",
                 exploreAll: "Explore All Fragrances",
                 madeSlowly: "Made Slowly. Meant to Be Felt.",
-                madeSlowlyDesc: "We believe the smallest rituals can make the biggest difference. Every candle begins with a thoughtful blend of fragrance, materials, and care.",
+                madeSlowlyDesc: "Inspired by Egyptian heritage and luxury craftsmanship, every candle begins with a thoughtful blend of fragrance, materials, and care in our Cairo studio.",
                 discoverProcess: "Discover Our Process",
                 findAtmosphere: "Find Your Atmosphere",
                 newsletterTitle: "Make Yourself at Home.",
@@ -153,8 +176,9 @@
                 contactInfo: "Contact Information",
                 shippingAddress: "Shipping Address",
                 firstName: "First Name",
-                lastName: "LastName",
+                lastName: "Last Name",
                 address: "Address",
+                governorate: "Governorate",
                 city: "City",
                 phone: "Phone Number",
                 paymentMethod: "Payment Method",
@@ -192,7 +216,7 @@
                 privacyPolicy: "Privacy Policy",
                 terms: "Terms and Conditions",
                 orderConfirmed: "Your order is confirmed",
-                orderConfirmedMessage: "Thank you for shopping with Ember & Bloom. We will contact you shortly to complete your order and arrange delivery.",
+                orderConfirmedMessage: "Thank you for shopping with Nour & Oud. We will contact you shortly to complete your order and arrange delivery.",
                 orderNumber: "Order Number",
                 continueShopping: "Continue Shopping",
                 trackOrder: "Track Order",
@@ -204,7 +228,10 @@
                 orderConfirmed: "Order Confirmed",
                 outForDelivery: "Out for Delivery",
                 delivered: "Delivered",
-                home: "Home"
+                home: "Home",
+                addressText: "Zamalek, Cairo, Egypt",
+                phoneText: "+20 10 1234 5678",
+                accountSynced: "Account Synced"
             },
             ar: {
                 announcement: "دفء لمنزلك — شحن مجاني للطلبات فوق ١٥٠٠ ج.م",
@@ -218,15 +245,15 @@
                 shippingNote: "يتم حساب الشحن والضرائب عند الدفع.",
                 proceedToCheckout: "متابعة الدفع",
                 quickAdd: "إضافة سريعة",
-                heroSubtitle: "صنع يدوياً، صنع للمنزل",
+                heroSubtitle: "صُنع يدوياً في القاهرة",
                 heroTitle: "اصنع مساحة لمزيد من الهدوء.",
-                heroDesc: "اكتشف الشموع المصنوعة يدوياً بعناية لتجلب الدفء، والعطور الجميلة، واللحظات ذات المعنى إلى حياتك اليومية.",
+                heroDesc: "مستوحاة من التراث المصري والحرفية الفاخرة. اكتشف الشموع المصنوعة يدوياً بعناية لتجلب الدفء، والعطور الجميلة، واللحظات ذات المعنى إلى حياتك اليومية.",
                 shopCollection: "تسوق التشكيلة",
                 littleThings: "أشياء صغيرة نحبها",
                 littleThingsDesc: "تعرف على الشموع التي يعود إليها مجتمعنا دائماً.",
                 exploreAll: "تصفح جميع العطور",
                 madeSlowly: "صنعت بتمهل. لكي تشعر بها.",
-                madeSlowlyDesc: "نحن نؤمن أن أصغر الطقوس يمكن أن تحدث أكبر فرق. تبدأ كل شمعة بمزيج مدروس من العطر والمواد والعناية.",
+                madeSlowlyDesc: "مستوحاة من التراث المصري والحرفية الفاخرة، تبدأ كل شمعة بمزيج مدروس من العطر والمواد والعناية في الاستوديو الخاص بنا في القاهرة.",
                 discoverProcess: "اكتشف عمليتنا",
                 findAtmosphere: "ابحث عن أجوائك",
                 newsletterTitle: "اجعل نفسك في المنزل.",
@@ -239,6 +266,7 @@
                 firstName: "الاسم الأول",
                 lastName: "الاسم الأخير",
                 address: "العنوان",
+                governorate: "المحافظة",
                 city: "المدينة",
                 phone: "رقم الهاتف",
                 paymentMethod: "طريقة الدفع",
@@ -276,7 +304,7 @@
                 privacyPolicy: "سياسة الخصوصية",
                 terms: "الشروط والأحكام",
                 orderConfirmed: "تم تأكيد طلبك",
-                orderConfirmedMessage: "شكراً لتسوقك مع إمبر آند بلوم. سنتواصل معك قريباً لاستكمال طلبك وترتيب التوصيل الدفع عند الاستلام.",
+                orderConfirmedMessage: "شكراً لتسوقك مع نور وعود. سنتواصل معك قريباً لاستكمال طلبك وترتيب التوصيل.",
                 orderNumber: "رقم الطلب",
                 continueShopping: "مواصلة التسوق",
                 trackOrder: "تتبع الطلب",
@@ -288,7 +316,10 @@
                 orderConfirmed: "تم تأكيد الطلب",
                 outForDelivery: "في الطريق للتوصيل",
                 delivered: "تم التوصيل",
-                home: "الرئيسية"
+                home: "الرئيسية",
+                addressText: "الزمالك، القاهرة، مصر",
+                phoneText: "+٢٠ ١٠ ١٢٣٤ ٥٦٧٨",
+                accountSynced: "تمت مزامنة الحساب"
             }
         };
 
@@ -296,12 +327,12 @@
         const products = [
             {
                 id: 'p1',
-                name: { en: 'Sunday Morning', ar: 'صباح الأحد' },
-                price: 1250,
-                fragranceFamily: { en: 'Warm & Cozy', ar: 'دافئ ومريح' },
-                fragrance: { en: 'Vanilla, oat milk, soft musk', ar: 'فانيليا، حليب الشوفان، مسك ناعم' },
-                description: { en: 'Capture the essence of a slow weekend morning. Soft, comforting, and deeply familiar, this blend wraps your space in a gentle, creamy warmth.', ar: 'التقط جوهر صباح عطلة نهاية الأسبوع البطيء. مزيج ناعم ومريح يغلف مساحتك بدفء كريمي لطيف.' },
-                notes: { top: 'Oat Milk, Almond', heart: 'Vanilla Bean, Honey', base: 'Soft Musk, Sandalwood' },
+                name: { en: 'Royal Oud', ar: 'عود ملكي' },
+                price: 850,
+                fragranceFamily: { en: 'Warm & Woody', ar: 'دافئ وخشبي' },
+                fragrance: { en: 'Oud, rich amber, sandalwood', ar: 'عود، عنبر غني، خشب الصندل' },
+                description: { en: 'A luxurious and commanding scent. The deep, resinous notes of authentic oud are softened by warm amber and creamy sandalwood.', ar: 'رائحة فاخرة وقوية. يتم تلطيف النوتات العميقة للعود الأصلي بواسطة العنبر الدافئ وخشب الصندل الكريمي.' },
+                notes: { top: 'Saffron, Rose', heart: 'Oud, Patchouli', base: 'Amber, Sandalwood' },
                 image: 'https://images.unsplash.com/photo-1605651202774-7d573fd3f12d?q=80&w=1000&auto=format&fit=crop',
                 isBestseller: true,
                 size: '8.5 oz',
@@ -309,12 +340,12 @@
             },
             {
                 id: 'p2',
-                name: { en: 'Wild Fig', ar: 'تين بري' },
-                price: 1350,
-                fragranceFamily: { en: 'Deep & Woody', ar: 'عميق وخشبي' },
-                fragrance: { en: 'Fig, green leaves, warm woods', ar: 'تين، أوراق خضراء، أخشاب دافئة' },
-                description: { en: 'An earthy, sophisticated scent that brings the outside in. Ripe fig is balanced with fresh green leaves and a grounding woody base.', ar: 'رائحة ترابية راقية تجلب الخارج إلى الداخل. يتوازن التين الناضج مع الأوراق الخضراء الطازجة وقاعدة خشبية أساسية.' },
-                notes: { top: 'Green Leaves, Ozone', heart: 'Fig, Jasmine', base: 'Cedarwood, Light Musk' },
+                name: { en: 'Egyptian Jasmine', ar: 'ياسمين مصري' },
+                price: 600,
+                fragranceFamily: { en: 'Floral', ar: 'زهري' },
+                fragrance: { en: 'Night-blooming jasmine, white tea', ar: 'ياسمين يتفتح ليلاً، شاي أبيض' },
+                description: { en: 'The intoxicating aroma of Egyptian jasmine on a warm summer night. Delicate, floral, and deeply romantic.', ar: 'الرائحة المسكرة للياسمين المصري في ليلة صيفية دافئة. رقيقة، زهرية، ورومانسية بعمق.' },
+                notes: { top: 'White Tea, Bergamot', heart: 'Egyptian Jasmine', base: 'Light Musk' },
                 image: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?q=80&w=1000&auto=format&fit=crop',
                 isBestseller: true,
                 size: '8.5 oz',
@@ -322,12 +353,12 @@
             },
             {
                 id: 'p3',
-                name: { en: 'Rosewood Ritual', ar: 'طقوس خشب الورد' },
-                price: 1450,
-                fragranceFamily: { en: 'Romantic & Floral', ar: 'رومانسي وزهري' },
-                fragrance: { en: 'Rose, sandalwood, amber', ar: 'ورد، خشب الصندل، عنبر' },
-                description: { en: 'A modern, moody take on a floral classic. Deep velvet rose intertwined with smoky sandalwood and warm amber for a truly luxurious atmosphere.', ar: 'لمسة عصرية ومزاجية على الكلاسيكية الزهرية. ورد مخملي عميق متشابك مع خشب الصندل الدخاني والعنبر الدافئ لجو فاخر حقاً.' },
-                notes: { top: 'Bergamot, Pink Pepper', heart: 'Damask Rose, Patchouli', base: 'Sandalwood, Amber' },
+                name: { en: 'Nile Breeze', ar: 'نسيم النيل' },
+                price: 550,
+                fragranceFamily: { en: 'Fresh', ar: 'منعش' },
+                fragrance: { en: 'Water lily, crisp linen, vetiver', ar: 'زنبق الماء، كتان نقي، نجيل الهند' },
+                description: { en: 'A refreshing and airy scent inspired by a gentle breeze over the Nile. Crisp and clean with aquatic floral notes.', ar: 'رائحة منعشة وخفيفة مستوحاة من نسيم عليل على نهر النيل. نقية ونظيفة مع نوتات زهرية مائية.' },
+                notes: { top: 'Ozone, Lemon', heart: 'Water Lily, Linen', base: 'Vetiver, Musk' },
                 image: 'https://images.unsplash.com/photo-1572726729207-a78d6feb18d7?q=80&w=1000&auto=format&fit=crop',
                 isBestseller: false,
                 size: '8.5 oz',
@@ -335,12 +366,12 @@
             },
             {
                 id: 'p4',
-                name: { en: 'Slow Living', ar: 'حياة بطيئة' },
-                price: 1250,
-                fragranceFamily: { en: 'Calm & Relaxing', ar: 'هادئ ومريح' },
-                fragrance: { en: 'Cedarwood, lavender, bergamot', ar: 'خشب الأرز، لافندر، برغموت' },
-                description: { en: 'Designed to help you unwind. A serene blend of calming lavender and uplifting bergamot, anchored by the quiet strength of cedarwood.', ar: 'مصمم لمساعدتك على الاسترخاء. مزيج هادئ من اللافندر المهدئ والبرغموت المنعش، يرتكز على القوة الهادئة لخشب الأرز.' },
-                notes: { top: 'Bergamot, Lemon', heart: 'Lavender, Clary Sage', base: 'Cedarwood, Vetiver' },
+                name: { en: 'Zamalek Nights', ar: 'ليالي الزمالك' },
+                price: 900,
+                fragranceFamily: { en: 'Calm', ar: 'هادئ' },
+                fragrance: { en: 'Lavender, bergamot, dark woods', ar: 'لافندر، برغموت، أخشاب داكنة' },
+                description: { en: 'Sophisticated and mysterious. A calming blend of lavender elevated by sharp bergamot and settled into a base of dark, elegant woods.', ar: 'راقي وغامض. مزيج مهدئ من اللافندر يرتقي به البرغموت الحاد ويستقر في قاعدة من الأخشاب الداكنة الأنيقة.' },
+                notes: { top: 'Bergamot, Sage', heart: 'Lavender, Vanilla', base: 'Dark Woods, Amber' },
                 image: 'https://images.unsplash.com/photo-1611078449945-89759c5d18d4?q=80&w=1000&auto=format&fit=crop',
                 isBestseller: true,
                 size: '8.5 oz',
@@ -348,53 +379,27 @@
             },
             {
                 id: 'p5',
-                name: { en: 'Midnight Balsam', ar: 'بلسم منتصف الليل' },
-                price: 1550,
-                fragranceFamily: { en: 'Deep & Woody', ar: 'عميق وخشبي' },
-                fragrance: { en: 'Pine, smoked woods, eucalyptus', ar: 'صنوبر، أخشاب مدخنة، أوكالبتوس' },
-                description: { en: 'A deep, mysterious blend reminiscent of a midnight walk through a winter forest. Cooling eucalyptus layered with smoked woods and fresh pine.', ar: 'مزيج عميق وغامض يذكرنا بنزهة في منتصف الليل عبر غابة شتوية. أوكالبتوس منعش متراكب مع أخشاب مدخنة وصنوبر طازج.' },
-                notes: { top: 'Eucalyptus, Mint', heart: 'Cypress, Pine', base: 'Smoked Woods, Tonka Bean' },
+                name: { en: 'Nubian Musk', ar: 'مسك نوبي' },
+                price: 750,
+                fragranceFamily: { en: 'Earthy', ar: 'ترابي' },
+                fragrance: { en: 'Earthy musk, frankincense, myrrh', ar: 'مسك ترابي، لبان، مر' },
+                description: { en: 'A deeply grounding and spiritual fragrance. Earthy musk intertwined with ancient resins of frankincense and myrrh.', ar: 'عطر يبعث على الاستقرار الروحي العميق. مسك ترابي متشابك مع راتنجات اللبان والمر القديمة.' },
+                notes: { top: 'Frankincense', heart: 'Myrrh, Spices', base: 'Earthy Musk, Patchouli' },
                 image: 'https://images.unsplash.com/photo-1602934585418-f588bea4215c?q=80&w=1000&auto=format&fit=crop',
-                isBestseller: true,
+                isBestseller: false,
                 size: '8.5 oz',
                 burnTime: '45-50 hours'
             },
             {
                 id: 'p6',
-                name: { en: 'Citrus & Basil', ar: 'حمضيات وريحان' },
-                price: 1150,
-                fragranceFamily: { en: 'Fresh & Uplifting', ar: 'منعش وحيوي' },
-                fragrance: { en: 'Mandarin, basil leaf, lime', ar: 'يوسفي، أوراق الريحان، ليمون' },
-                description: { en: 'A vibrant, energizing scent that brightens any room. Zesty lime and sweet mandarin are perfectly balanced with peppery basil.', ar: 'رائحة حيوية ومنشطة تضيء أي غرفة. ليمون لاذع ويوسفي حلو متوازنان تماماً مع الريحان الفلفلي.' },
-                notes: { top: 'Lime, Mandarin', heart: 'Basil, Thyme', base: 'White Musk' },
+                name: { en: 'Red Sea Amber', ar: 'عنبر البحر الأحمر' },
+                price: 800,
+                fragranceFamily: { en: 'Deep', ar: 'عميق' },
+                fragrance: { en: 'Golden amber, sea salt, driftwood', ar: 'عنبر ذهبي، ملح بحر، خشب طافي' },
+                description: { en: 'Warmth meets the ocean. Golden amber notes contrast beautifully with a hint of sea salt and sun-bleached driftwood.', ar: 'الدفء يلتقي بالمحيط. تتناقض نوتات العنبر الذهبي بشكل جميل مع لمسة من ملح البحر والخشب الطافي المبيض بالشمس.' },
+                notes: { top: 'Sea Salt, Citrus', heart: 'Amber, Cedar', base: 'Driftwood, Tonka' },
                 image: 'https://images.unsplash.com/photo-1528318269466-6963428807d9?q=80&w=1000&auto=format&fit=crop',
-                isBestseller: false,
-                size: '8.5 oz',
-                burnTime: '45-50 hours'
-            },
-            {
-                id: 'p7',
-                name: { en: 'Amber Woods', ar: 'أخشاب العنبر' },
-                price: 1600,
-                fragranceFamily: { en: 'Warm & Cozy', ar: 'دافئ ومريح' },
-                fragrance: { en: 'Amber, cedar, rich vanilla', ar: 'عنبر، أرز، فانيليا غنية' },
-                description: { en: 'Rich, luxurious, and enveloping. This fragrance creates an atmosphere of sophisticated comfort with its deep amber and creamy vanilla base.', ar: 'غني وفاخر ويغلفك بالدفء. هذا العطر يخلق جواً من الراحة الراقية بقاعدة العنبر العميق والفانيليا الكريمية.' },
-                notes: { top: 'Spiced Orange', heart: 'Cedarwood, Patchouli', base: 'Amber, Vanilla' },
-                image: 'https://images.unsplash.com/photo-1550586968-3d19b780bc48?q=80&w=1000&auto=format&fit=crop',
-                isBestseller: false,
-                size: '8.5 oz',
-                burnTime: '45-50 hours'
-            },
-            {
-                id: 'p8',
-                name: { en: 'Cashmere Plum', ar: 'كشمير البرقوق' },
-                price: 1350,
-                fragranceFamily: { en: 'Romantic & Floral', ar: 'رومانسي وزهري' },
-                fragrance: { en: 'Dark plum, black cherry, freesia', ar: 'برقوق داكن، كرز أسود، فريزيا' },
-                description: { en: 'Wrap yourself in elegance. A beautiful harmony of dark fruits and delicate florals over a smooth, cashmere-like musky base.', ar: 'لف نفسك بالأناقة. تناغم جميل بين الفواكه الداكنة والزهور الرقيقة فوق قاعدة مسكية ناعمة تشبه الكشمير.' },
-                notes: { top: 'Plum, Citrus', heart: 'Black Cherry, Freesia', base: 'Light Musk, Amber' },
-                image: 'https://images.unsplash.com/photo-1601267448386-777e4fbcaeb0?q=80&w=1000&auto=format&fit=crop',
-                isBestseller: false,
+                isBestseller: true,
                 size: '8.5 oz',
                 burnTime: '45-50 hours'
             }
@@ -417,7 +422,8 @@
             Package: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>,
             Globe: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>,
             ArrowRight: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>,
-            ArrowLeft: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+            ArrowLeft: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>,
+            User: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4-4v2"/><circle cx="12" cy="7" r="4"/></svg>
         };
 
         // --- CONTEXT ---
@@ -432,6 +438,8 @@
             const [toastMessage, setToastMessage] = useState(null);
             const [lang, setLang] = useState('en');
             const [theme, setTheme] = useState('light');
+            const [user, setUser] = useState(null);
+            const [isSynced, setIsSynced] = useState(false);
 
             useEffect(() => {
                 document.documentElement.lang = lang;
@@ -443,11 +451,79 @@
                 else document.documentElement.classList.remove('dark');
             }, [theme]);
 
+            // Initialize Firebase Auth
             useEffect(() => {
-                const handleClearCart = () => setCart([]);
+                if (!window.firebaseEnv) return;
+                const { auth, helpers } = window.firebaseEnv;
+                
+                const initAuth = async () => {
+                    try {
+                        const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                        if (token) {
+                            await helpers.signInWithCustomToken(auth, token);
+                        } else {
+                            await helpers.signInAnonymously(auth);
+                        }
+                    } catch (e) {
+                        console.error("Auth error", e);
+                    }
+                };
+                initAuth();
+
+                return helpers.onAuthStateChanged(auth, (u) => {
+                    setUser(u);
+                    if (u) setIsSynced(true);
+                });
+            }, []);
+
+            // Sync Cart and Wishlist from Firestore
+            useEffect(() => {
+                if (!user || !window.firebaseEnv) return;
+                const { db, helpers, appId } = window.firebaseEnv;
+                
+                const cartRef = helpers.doc(db, 'artifacts', appId, 'users', user.uid, 'shop', 'cart');
+                const cartUnsub = helpers.onSnapshot(cartRef, (doc) => { 
+                    if (doc.exists()) setCart(doc.data().items || []); 
+                }, (err) => console.error(err));
+
+                const wishRef = helpers.doc(db, 'artifacts', appId, 'users', user.uid, 'shop', 'wishlist');
+                const wishUnsub = helpers.onSnapshot(wishRef, (doc) => { 
+                    if (doc.exists()) setWishlist(doc.data().items || []); 
+                }, (err) => console.error(err));
+
+                return () => { cartUnsub(); wishUnsub(); };
+            }, [user]);
+
+            // Database Sync Helpers
+            const _updateCart = (newCartOrUpdater) => {
+                setCart(prev => {
+                    const newCart = typeof newCartOrUpdater === 'function' ? newCartOrUpdater(prev) : newCartOrUpdater;
+                    if (user && window.firebaseEnv) {
+                        const { db, helpers, appId } = window.firebaseEnv;
+                        helpers.setDoc(helpers.doc(db, 'artifacts', appId, 'users', user.uid, 'shop', 'cart'), { items: newCart })
+                            .catch(console.error);
+                    }
+                    return newCart;
+                });
+            };
+
+            const _updateWishlist = (newWishlistOrUpdater) => {
+                setWishlist(prev => {
+                    const newWishlist = typeof newWishlistOrUpdater === 'function' ? newWishlistOrUpdater(prev) : newWishlistOrUpdater;
+                    if (user && window.firebaseEnv) {
+                        const { db, helpers, appId } = window.firebaseEnv;
+                        helpers.setDoc(helpers.doc(db, 'artifacts', appId, 'users', user.uid, 'shop', 'wishlist'), { items: newWishlist })
+                            .catch(console.error);
+                    }
+                    return newWishlist;
+                });
+            };
+
+            useEffect(() => {
+                const handleClearCart = () => _updateCart([]);
                 window.addEventListener('clear-cart', handleClearCart);
                 return () => window.removeEventListener('clear-cart', handleClearCart);
-            }, []);
+            }, [user]);
 
             const navigate = (page, id = null, options = {}) => {
                 setCurrentRoute({ page, id, options });
@@ -459,7 +535,7 @@
             const toggleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
 
             const addToCart = (product, quantity = 1) => {
-                setCart(prev => {
+                _updateCart(prev => {
                     const existing = prev.find(item => item.id === product.id);
                     if (existing) {
                         return prev.map(item => item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item);
@@ -471,7 +547,7 @@
             };
 
             const updateCartQuantity = (id, delta) => {
-                setCart(prev => prev.map(item => {
+                _updateCart(prev => prev.map(item => {
                     if (item.id === id) {
                         const newQ = item.quantity + delta;
                         return newQ > 0 ? { ...item, quantity: newQ } : item;
@@ -480,10 +556,10 @@
                 }));
             };
 
-            const removeFromCart = (id) => setCart(prev => prev.filter(item => item.id !== id));
+            const removeFromCart = (id) => _updateCart(prev => prev.filter(item => item.id !== id));
             
             const toggleWishlist = (product) => {
-                setWishlist(prev => {
+                _updateWishlist(prev => {
                     const exists = prev.find(item => item.id === product.id);
                     if (exists) return prev.filter(item => item.id !== product.id);
                     return [...prev, product];
@@ -509,7 +585,7 @@
                     currentRoute, navigate, cart, addToCart, updateCartQuantity, removeFromCart, 
                     isCartOpen, setIsCartOpen, cartTotal, cartCount, wishlist, toggleWishlist,
                     isMobileMenuOpen, setIsMobileMenuOpen, toastMessage, lang, toggleLang, theme, toggleTheme,
-                    formatPrice, t: t[lang]
+                    formatPrice, user, isSynced, t: t[lang]
                 }}>
                     {children}
                 </AppContext.Provider>
@@ -558,7 +634,7 @@
         }
 
         const Header = () => {
-            const { navigate, cartCount, setIsCartOpen, isMobileMenuOpen, setIsMobileMenuOpen, t, lang, toggleLang, theme, toggleTheme } = useAppContext();
+            const { navigate, cartCount, setIsCartOpen, isMobileMenuOpen, setIsMobileMenuOpen, t, lang, toggleLang, theme, toggleTheme, isSynced } = useAppContext();
             const [isScrolled, setIsScrolled] = useState(false);
             const fontClass = lang === 'ar' ? 'font-arabic' : 'font-sans';
 
@@ -585,16 +661,14 @@
                             {/* Desktop Nav - Left */}
                             <nav className="hidden md:flex items-center gap-8 flex-1">
                                 <button onClick={() => navigate('shop')} className="text-sm font-medium hover:text-brand-terracotta transition-colors">{t.shop}</button>
-                                <button onClick={() => navigate('story')} className="text-sm font-medium hover:text-brand-terracotta transition-colors">{t.ourStory}</button>
                                 <button onClick={() => navigate('faq')} className="text-sm font-medium hover:text-brand-terracotta transition-colors">{t.faq}</button>
                                 <button onClick={() => navigate('track')} className="text-sm font-medium hover:text-brand-terracotta transition-colors">{t.trackOrder}</button>
                             </nav>
 
                             {/* Logo - Center */}
                             <div className="flex-1 flex justify-center">
-                                <button onClick={() => navigate('home')} className="font-serif text-2xl md:text-[26px] tracking-[0.2em] text-brand-charcoal text-center leading-[1.1] flex flex-col items-center">
-                                    <span>EMBER &</span>
-                                    <span>BLOOM</span>
+                                <button onClick={() => navigate('home')} className="font-serif text-xl md:text-2xl tracking-[0.2em] text-brand-charcoal text-center leading-[1.1] whitespace-nowrap">
+                                    NOUR & OUD
                                 </button>
                             </div>
 
@@ -605,6 +679,9 @@
                                 </button>
                                 <button onClick={toggleTheme} className="hidden md:block p-1 hover:text-brand-terracotta transition-colors">
                                     {theme === 'light' ? <Icons.Moon /> : <Icons.Sun />}
+                                </button>
+                                <button className={`hidden md:flex items-center gap-1.5 p-1 text-sm font-medium transition-colors ${isSynced ? 'text-brand-terracotta' : 'hover:text-brand-terracotta'}`} title={isSynced ? t.accountSynced : ''}>
+                                    <Icons.User />
                                 </button>
                                 <button className="relative p-1 hover:text-brand-terracotta transition-colors" onClick={() => setIsCartOpen(true)}>
                                     <Icons.Bag />
@@ -628,7 +705,7 @@
                             
                             <div className={`relative w-4/5 max-w-sm bg-brand-ivory h-full shadow-2xl flex flex-col ${lang === 'ar' ? 'animate-slide-in-right' : 'animate-slide-in-left'} overflow-y-auto ${fontClass}`}>
                                 <div className="flex items-center justify-between p-6 border-b border-brand-border">
-                                    <span className="font-serif text-xl tracking-[0.15em]">EMBER & BLOOM</span>
+                                    <span className="font-serif text-xl tracking-[0.15em] whitespace-nowrap">NOUR & OUD</span>
                                     <button onClick={closeMobileMenu} className="p-2 -mr-2 md:mr-0 text-brand-gray hover:text-brand-charcoal transition-colors">
                                         <Icons.X />
                                     </button>
@@ -637,12 +714,16 @@
                                 <nav className="flex flex-col p-6 gap-6 flex-1">
                                     <button onClick={() => { navigate('home'); closeMobileMenu(); }} className="text-start text-lg font-medium hover:text-brand-terracotta transition-colors">{t.home}</button>
                                     <button onClick={() => { navigate('shop'); closeMobileMenu(); }} className="text-start text-lg font-medium hover:text-brand-terracotta transition-colors">{t.shop}</button>
-                                    <button onClick={() => { navigate('story'); closeMobileMenu(); }} className="text-start text-lg font-medium hover:text-brand-terracotta transition-colors">{t.ourStory}</button>
                                     <button onClick={() => { navigate('faq'); closeMobileMenu(); }} className="text-start text-lg font-medium hover:text-brand-terracotta transition-colors">{t.faq}</button>
                                     <button onClick={() => { navigate('track'); closeMobileMenu(); }} className="text-start text-lg font-medium hover:text-brand-terracotta transition-colors">{t.trackOrder}</button>
                                 </nav>
                                 
                                 <div className="p-6 border-t border-brand-border flex flex-col gap-6">
+                                    {isSynced && (
+                                        <div className="flex items-center gap-3 text-lg font-medium text-brand-terracotta">
+                                            <Icons.User /> {t.accountSynced}
+                                        </div>
+                                    )}
                                     <button onClick={() => { toggleLang(); closeMobileMenu(); }} className="flex items-center gap-3 text-lg font-medium text-start hover:text-brand-terracotta transition-colors">
                                         <Icons.Globe /> {lang === 'en' ? 'عربي' : 'English'}
                                     </button>
@@ -668,7 +749,7 @@
                         <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-8 mb-20">
                             {/* Brand & Newsletter - Left */}
                             <div className="md:col-span-5 lg:col-span-4 flex flex-col items-start">
-                                <h2 className="font-serif text-3xl tracking-widest mb-4">EMBER & BLOOM</h2>
+                                <h2 className="font-serif text-3xl tracking-widest mb-4">NOUR & OUD</h2>
                                 <p className="text-sm opacity-80 mb-8 max-w-xs leading-relaxed">{t.footerTagline}</p>
                                 
                                 <form className="w-full relative max-w-sm" onSubmit={(e) => e.preventDefault()}>
@@ -715,9 +796,21 @@
                             </div>
                         </div>
 
+                        {/* Contact Info */}
+                        <div className="border-t border-neutral-900/10 dark:border-neutral-200/10 pt-8 pb-4 mb-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm opacity-80">
+                            <div>
+                                <p className="font-medium mb-1">{lang === 'en' ? 'Address' : 'العنوان'}</p>
+                                <p>{t.addressText}</p>
+                            </div>
+                            <div>
+                                <p className="font-medium mb-1">{lang === 'en' ? 'Phone' : 'الهاتف'}</p>
+                                <p style={{ direction: 'ltr', textAlign: lang === 'ar' ? 'right' : 'left' }}>{t.phoneText}</p>
+                            </div>
+                        </div>
+
                         {/* Bottom Bar */}
                         <div className="pt-8 border-t border-neutral-900/10 dark:border-neutral-200/10 flex flex-col md:flex-row justify-between items-center gap-6 text-xs opacity-70">
-                            <p>&copy; 2024 Ember & Bloom. All rights reserved.</p>
+                            <p>&copy; 2024 Nour & Oud. All rights reserved.</p>
                             <div className="flex items-center gap-4 text-sm font-medium tracking-wide">
                                 <span>{t.paymentMethods}</span>
                             </div>
@@ -925,22 +1018,29 @@
             return (
                 <div className="animate-fade-in">
                     {/* Hero Section */}
-                    <section className="relative h-[85vh] min-h-[600px] flex items-center p-4 md:p-8">
-                        <div className="absolute inset-4 md:inset-8 rounded-3xl overflow-hidden shadow-xl">
+                    <section className="relative h-[85vh] min-h-[600px] flex items-center justify-center p-4 md:p-8">
+                        <div className="absolute inset-4 md:inset-8 rounded-[2.5rem] overflow-hidden shadow-2xl">
                             <img 
                                 src="https://images.unsplash.com/photo-1602928321679-560bb453f190?q=80&w=2000&auto=format&fit=crop" 
                                 alt="Minimalist warm interior" 
                                 className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-black/30"></div>
+                            {/* Improved gradient overlay for better text contrast and mood */}
+                            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/70"></div>
                         </div>
-                        <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-12 w-full">
-                            <div className="max-w-xl text-white">
-                                <span className={`uppercase tracking-[0.2em] text-xs font-bold mb-4 block ${fontClass}`}>{t.heroSubtitle}</span>
-                                <h1 className="font-serif text-5xl md:text-7xl mb-6 drop-shadow-lg">{t.heroTitle}</h1>
-                                <p className={`text-lg md:text-xl font-medium mb-10 max-w-md drop-shadow-md text-white/90 ${fontClass}`}>{t.heroDesc}</p>
-                                <Button variant="white" onClick={() => navigate('shop')}>{t.shopCollection}</Button>
-                            </div>
+                        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center text-white flex flex-col items-center mt-12 md:mt-0">
+                            <span className={`uppercase tracking-[0.25em] text-sm md:text-base font-semibold mb-6 text-brand-ivory/80 ${fontClass}`}>
+                                {t.heroSubtitle}
+                            </span>
+                            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl mb-6 md:mb-8 leading-tight drop-shadow-xl">
+                                {t.heroTitle}
+                            </h1>
+                            <p className={`text-lg md:text-2xl font-medium mb-10 max-w-2xl text-brand-ivory/90 leading-relaxed drop-shadow-md ${fontClass}`}>
+                                {t.heroDesc}
+                            </p>
+                            <Button variant="white" className="h-14 px-10 text-lg shadow-xl" onClick={() => navigate('shop')}>
+                                {t.shopCollection}
+                            </Button>
                         </div>
                     </section>
 
@@ -960,20 +1060,31 @@
                         </div>
                     </section>
 
-                    {/* Story Section */}
-                    <section className="py-24 bg-brand-invert text-brand-ivory rounded-[3rem] mx-4 md:mx-8 mb-24 overflow-hidden">
-                        <div className="max-w-7xl mx-auto px-4 md:px-12 flex flex-col md:flex-row items-center gap-16">
-                            <div className="flex-1 w-full relative">
-                                <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
-                                    <img src="https://images.unsplash.com/photo-1589363460779-cb71b802613d?q=80&w=1200&auto=format&fit=crop" alt="Pouring wax" className="w-full h-full object-cover" />
+                    {/* Minimal Story Section */}
+                    <section className="py-24 max-w-7xl mx-auto px-4 md:px-8 mb-12">
+                        <div className="flex flex-col md:flex-row items-center gap-16 lg:gap-24">
+                            <div className="flex-1 w-full order-2 md:order-1">
+                                <div className="aspect-[4/5] md:aspect-square lg:aspect-[4/5] rounded-[2rem] overflow-hidden shadow-xl border border-brand-border/50 group">
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1589363460779-cb71b802613d?q=80&w=1200&auto=format&fit=crop" 
+                                        alt="Craftsmanship" 
+                                        className="w-full h-full object-cover img-hover-zoom" 
+                                    />
                                 </div>
                             </div>
-                            <div className="flex-1 max-w-xl">
-                                <h2 className="font-serif text-4xl md:text-5xl mb-8 leading-tight">{t.madeSlowly}</h2>
-                                <p className={`text-lg font-medium mb-8 text-brand-ivory/80 ${fontClass}`}>
+                            <div className="flex-1 max-w-xl order-1 md:order-2">
+                                <span className={`uppercase tracking-widest text-xs font-semibold mb-4 block text-brand-terracotta ${fontClass}`}>
+                                    {lang === 'ar' ? 'تراث وحرفية' : 'Heritage & Craft'}
+                                </span>
+                                <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-8 leading-tight text-brand-charcoal">
+                                    {t.madeSlowly}
+                                </h2>
+                                <p className={`text-lg text-brand-gray mb-10 leading-relaxed ${fontClass}`}>
                                     {t.madeSlowlyDesc}
                                 </p>
-                                <Button variant="white" onClick={() => navigate('story')}>{t.discoverProcess}</Button>
+                                <Button variant="secondary" onClick={() => navigate('story')}>
+                                    {t.discoverProcess}
+                                </Button>
                             </div>
                         </div>
                     </section>
@@ -1196,8 +1307,17 @@
                                         <input type="text" required placeholder={t.lastName} className={inputClass} />
                                     </div>
                                     <input type="text" required placeholder={t.address} className={`${inputClass} mb-4`} />
-                                    <div className="grid grid-cols-2 gap-4 mb-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                        <select required defaultValue="" className={`${inputClass} appearance-none bg-transparent cursor-pointer`}>
+                                            <option value="" disabled>{t.governorate}</option>
+                                            <option value="cairo">{lang === 'en' ? 'Cairo' : 'القاهرة'}</option>
+                                            <option value="giza">{lang === 'en' ? 'Giza' : 'الجيزة'}</option>
+                                            <option value="alexandria">{lang === 'en' ? 'Alexandria' : 'الإسكندرية'}</option>
+                                            <option value="qalyubia">{lang === 'en' ? 'Al Qalyubia' : 'القليوبية'}</option>
+                                        </select>
                                         <input type="text" required placeholder={t.city} className={inputClass} />
+                                    </div>
+                                    <div className="mb-4">
                                         <input type="text" required placeholder={t.phone} className={inputClass} />
                                     </div>
                                 </div>
@@ -1326,6 +1446,38 @@
             );
         };
 
+        const StoryPage = () => {
+            const { t, lang } = useAppContext();
+            const fontClass = lang === 'ar' ? 'font-arabic' : 'font-sans';
+            
+            return (
+                <div className={`max-w-7xl mx-auto px-4 md:px-8 py-24 animate-fade-in ${fontClass}`}>
+                    <div className="flex flex-col md:flex-row items-center gap-16 lg:gap-24">
+                        <div className="flex-1 w-full order-2 md:order-1">
+                            <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-xl border border-brand-border/50">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1589363460779-cb71b802613d?q=80&w=1200&auto=format&fit=crop" 
+                                    alt="Craftsmanship" 
+                                    className="w-full h-full object-cover" 
+                                />
+                            </div>
+                        </div>
+                        <div className="flex-1 max-w-xl order-1 md:order-2">
+                            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-8 leading-tight text-brand-charcoal">
+                                {t.ourStory}
+                            </h1>
+                            <p className="text-lg text-brand-gray mb-6 leading-relaxed">
+                                {t.madeSlowlyDesc}
+                            </p>
+                            <p className="text-lg text-brand-gray leading-relaxed">
+                                {lang === 'ar' ? 'نحن نؤمن بأن أصغر الطقوس يمكن أن تحدث أكبر فرق. تم تصميم مجموعاتنا بعناية لتجلب الدفء والهدوء إلى كل زاوية من زوايا منزلك.' : 'We believe the smallest rituals can make the biggest difference. Our collections are thoughtfully designed to bring warmth and calm into every corner of your home.'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         // --- APP ROOT ---
         const App = () => {
             const { currentRoute, t, lang } = useAppContext();
@@ -1340,8 +1492,8 @@
                         </p>
                         <p className="opacity-80">
                             {lang === 'ar'
-                                ? "شكراً لزيارتك إمبر آند بلوم. نحن ملتزمون بتقديم أفضل تجربة ممكنة لك."
-                                : "Thank you for visiting Ember & Bloom. We are dedicated to providing you with the best experience possible."}
+                                ? "شكراً لزيارتك نور وعود. نحن ملتزمون بتقديم أفضل تجربة ممكنة لك."
+                                : "Thank you for visiting Nour & Oud. We are dedicated to providing you with the best experience possible."}
                         </p>
                     </>
                 );
